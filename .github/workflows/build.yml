@@ -1,0 +1,33 @@
+name: Lab00 build
+on: [push, pull_request, workflow_dispatch]
+permissions:
+  contents: read
+jobs:
+  cpp:
+    name: C++ compilation and run
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - name: Compile C++
+        run: |
+          mkdir -p build/cpp
+          g++ -std=c++17 -Wall -Wextra -Wpedantic cpp/main.cpp -o build/cpp/hello
+      - name: Run C++
+        run: ./build/cpp/hello
+  java:
+    name: Java compilation and run
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
+        with:
+          distribution: temurin
+          java-version: '17'
+      - name: Compile Java
+        run: |
+          mkdir -p build/java
+          javac -encoding UTF-8 -d build/java java/Main.java
+      - name: Run Java
+        run: java -cp build/java Main
